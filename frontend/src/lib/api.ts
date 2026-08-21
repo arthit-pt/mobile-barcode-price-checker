@@ -39,6 +39,14 @@ class ApiClient {
     return this.request<Product>(`/api/products/barcode/${barcode}`);
   }
 
+  // Public: Create product (no auth required)
+  async createProductPublic(data: CreateProductRequest): Promise<Product> {
+    return this.request<Product>('/api/products', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
   // Admin API
   async getAllProducts(credentials: string): Promise<Product[]> {
     return this.request<Product[]>('/api/products', {
