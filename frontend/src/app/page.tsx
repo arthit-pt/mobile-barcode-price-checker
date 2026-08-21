@@ -4,10 +4,11 @@ import { useState } from 'react';
 import BarcodeScanner from '@/components/BarcodeScanner';
 import ManualBarcodeInput from '@/components/ManualBarcodeInput';
 import ProductResult from '@/components/ProductResult';
+import AddProductForm from '@/components/AddProductForm';
 import { Product, ApiError } from '@/types/product';
 import { apiClient } from '@/lib/api';
 
-type ViewState = 'scan' | 'result' | 'not-found' | 'error';
+type ViewState = 'scan' | 'result' | 'not-found' | 'error' | 'add-product';
 
 export default function HomePage() {
   const [viewState, setViewState] = useState<ViewState>('scan');
@@ -103,6 +104,12 @@ export default function HomePage() {
 
           <div className="flex flex-col gap-3">
             <button
+              onClick={() => setViewState('add-product')}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-6 rounded-xl shadow transition-all duration-200"
+            >
+              + เพิ่มสินค้านี้
+            </button>
+            <button
               onClick={handleScanAgain}
               className="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-4 px-6 rounded-xl shadow transition-all duration-200"
             >
@@ -116,6 +123,18 @@ export default function HomePage() {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Add Product View */}
+      {viewState === 'add-product' && (
+        <AddProductForm
+          barcode={searchedBarcode}
+          onSuccess={(newProduct) => {
+            setProduct(newProduct);
+            setViewState('result');
+          }}
+          onCancel={handleScanAgain}
+        />
       )}
 
       {/* Error View */}

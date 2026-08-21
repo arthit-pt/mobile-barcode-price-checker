@@ -33,6 +33,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Public: GET product by barcode
                 .requestMatchers(HttpMethod.GET, "/api/products/barcode/**").permitAll()
+                // Public: POST create product (users can add products)
+                .requestMatchers(HttpMethod.POST, "/api/products").permitAll()
                 // Admin: All other product endpoints
                 .requestMatchers("/api/products/**").hasRole("ADMIN")
                 .anyRequest().permitAll()
